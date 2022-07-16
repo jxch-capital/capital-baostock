@@ -1,7 +1,6 @@
 from flask import Blueprint, request
-import baostock as bs
 import stock.bs_utils as bsu
-import grafana.support as support
+import baostock as bs
 
 baostock_api = Blueprint('baostock_api', __name__)
 
@@ -11,7 +10,6 @@ def root():
     return '{"status":"success"}'
 
 
-@support.cache_with_param()
 @baostock_api.route("/grafana/daily_stock_names", methods=["POST"])
 def daily_stock_names():
     names = request.json.get('names')
@@ -21,11 +19,10 @@ def daily_stock_names():
     bs.login()
     json_arr = bsu.query_daily_k_json_by_names(names, bsu.time_to_str(start), bsu.time_to_str(end))
     bs.logout()
-    print("<---- /grafana/daily_stock_names", names, start, end, json_arr)
+    print("<---- /grafana/daily_stock_names", names, start, end)
     return json_arr
 
 
-@support.cache_with_param()
 @baostock_api.route("/grafana/daily_stock_codes", methods=["POST"])
 def daily_stock_codes():
     codes = request.json.get('codes')
@@ -35,5 +32,5 @@ def daily_stock_codes():
     bs.login()
     json_arr = bsu.query_daily_k_json(codes, bsu.time_to_str(start), bsu.time_to_str(end))
     bs.logout()
-    print("<---- /grafana/daily_stock_codes", codes, start, end, json_arr)
+    print("<---- /grafana/daily_stock_codes", codes, start, end)
     return json_arr
