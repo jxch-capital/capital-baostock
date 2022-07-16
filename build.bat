@@ -1,0 +1,1 @@
+docker buildx build --platform=linux/arm64,linux/amd64 -t  jxch/capital-baostock:$(Get-Date -Format 'yyyy-MM-dd') -t jxch/capital-baostock:latest . --push
